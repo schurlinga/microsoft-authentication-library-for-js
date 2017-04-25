@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <script src="App/Scripts/adal.js"></script>
+    <script>
+        console.log("frameRedirect loaded");
+         //Enter Global Config Values & Instantiate ADAL AuthenticationContext
+        window.config = {
+            instance: 'https://login.microsoftonline.com/',
+            tenant: 'rohit1.onmicrosoft.com',
+            clientId: '6f5dcb14-c5fd-442b-beee-05fb15e3a302',
+            cacheLocation: 'localStorage', // enable this for IE, as sessionStorage does not work for localhost.
+            postLogoutRedirectUri: window.location.origin,
+
+        };
+        if (localStorage.getItem('redirectUri'))
+            window.config.redirectUri = localStorage.getItem('redirectUri');
+        else
+            window.config.redirectUri = window.location.href;
+
+        if (localStorage.getItem('popUp'))
+            window.config.popUp = localStorage.getItem('popUp');
+        else
+            window.config.popUp = false;
+
+        var authContext = new AuthenticationContext(config);
+        window.authContext.handleWindowCallback(window.location.hash);
+    </script>
+</head>
+<body>
+    <button id="frameRedirect" type="button">frameRedirect.html</button>
+</body>
+</html>

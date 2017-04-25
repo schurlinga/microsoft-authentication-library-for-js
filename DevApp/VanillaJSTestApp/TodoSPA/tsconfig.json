@@ -1,0 +1,24 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compileOnSave": true,
+  "compilerOptions": {
+    "outFile": "out/msal.js",
+    "declaration": true
+  },
+  "exclude": [
+    "node_modules",
+    "out",
+    "tests",
+    "App",
+    "App_Data",
+    "App_Start",
+    "bin",
+    "Migrations",
+    "Models",
+    "obj",
+    "Properties",
+    "typings",
+    "Controllers",
+    "DAL"
+  ]
+}
