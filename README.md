@@ -1,78 +1,132 @@
 
-Microsoft Authentication Library Preview for JavaScript (MSAL.js)
+Multitarget version of Microsoft Authentication Library Preview for JavaScript
 =========================================================
+
+*Msal.js is in preview and does not support CommonJS or ES6 targets. This is a temporary solution to be used in react projects until the original repository supports CommonJS.*
 
 | [Getting Started](https://github.com/Azure-Samples/active-directory-javascript-singlepageapp-dotnet-webapi-v2 )| [Docs](https://aka.ms/aaddevv2) | [API Reference](https://htmlpreview.github.io/?https://raw.githubusercontent.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/docs/classes/_useragentapplication_.msal.useragentapplication.html) | [Support](README.md#community-help-and-support) | [Samples](./devApps/VanillaJSTestApp )
 | --- | --- | --- | --- | --- |
-
 
 The MSAL library preview for JavaScript enables your app to authorize enterprise users using Microsoft Azure Active Directory (AAD), Microsoft account users (MSA), users using social identity providers like Facebook, Google, LinkedIn etc. and get access to [Microsoft Cloud](https://cloud.microsoft.com) OR  [Microsoft Graph](https://graph.microsoft.io). 
 
 The identity management services that the library interacts with are [Microsoft Azure Active Directory](https://azure.microsoft.com/en-us/services/active-directory/), [Microsoft Azure B2C](https://azure.microsoft.com/services/active-directory-b2c/) and [Microsoft Accounts](https://account.microsoft.com).
 
-
-[![Build Status](https://travis-ci.org/AzureAD/microsoft-authentication-library-for-js.png?branch=dev)](https://travis-ci.org/AzureAD/microsoft-authentication-library-for-js)[![npm version](https://img.shields.io/npm/v/msal.svg?style=flat)](https://www.npmjs.com/package/msal)[![npm version](https://img.shields.io/npm/dm/msal.svg)](https://nodei.co/npm/msal/)
+[![npm version](https://img.shields.io/npm/v/msalx.svg?style=flat)](https://www.npmjs.com/package/msalx)
+[![npm version](https://img.shields.io/npm/dm/msalx.svg)](https://nodei.co/npm/msalx/)
 
 ## Important Note about the MSAL Preview
 This library is suitable for use in a production environment. We provide the same production level support for this library as we do our current production libraries. During the preview we may make changes to the API, internal cache format, and other mechanisms of this library, which you will be required to take along with bug fixes or feature improvements. This may impact your application. For instance, a change to the cache format may impact your users, such as requiring them to sign in again. An API change may require you to update your code. When we provide the General Availability release we will require you to update to the General Availability version within six months, as applications written using a preview version of library may no longer work.
 
-
+## Installation
+Via NPM:
+    `npm install msalx`
+    
 ## Example
 This example shows how to acquire a token to read user information from Microsoft Graph.
 1. Register an application in Azure AD v2.0 (using the [application registration portal](https://apps.dev.microsoft.com/)) to get your client_id. you will also need to add the Web platform, check the "Implicit Flow" checkbox, and add the redirectURI to your application.
 2. Instantiate a UserAgentApplication and login the user:
-```JavaScript
-    <script class="pre">
-        var userAgentApplication = new Msal.UserAgentApplication("your_client_id", null, function (errorDes, token, error, tokenType) {
-              // this callback is called after loginRedirect OR acquireTokenRedirect (not used for loginPopup/aquireTokenPopup)
-        })
-        userAgentApplication.loginPopup(["user.read"]).then( function(token) {
-            var user = userAgentApplication.getUser();
-            // signin successful
-        }, function (error) {
-            // handle error
+```TypeScript
+import * as React from 'react';
+import { render } from 'react-dom';
+import { UserAgentApplication } from 'msalx';
+
+var applicationConfig = {
+  clientID: 'e760cab2-b9a1-4c0d-86fb-ff7084abd902',
+  authority: "https://login.microsoftonline.com/tfp/fabrikamb2c.onmicrosoft.com/b2c_1_susi",
+  b2cScopes: ["https://fabrikamb2c.onmicrosoft.com/demoapi/demo.read"],
+  webApi: 'https://fabrikamb2chello.azurewebsites.net/hello',
+};
+
+class App extends React.Component<{}, { isLoggedIn: boolean, message: string }> {
+  
+  clientApplication = new UserAgentApplication(applicationConfig.clientID, applicationConfig.authority,
+    (errorDesc, token, error, tokenType) => {
+      // Called after loginRedirect or acquireTokenPopup
+      if (tokenType == "id_token") {
+        var userName = this.clientApplication.getUser().name;
+        this.setState({ isLoggedIn: true });
+        this.logMessage("User '" + userName + "' logged-in");
+      } else {
+        this.logMessage("Error during login:\n" + error);
+      }
+    });
+
+  state = {
+    isLoggedIn: false,
+    message: ""
+  }
+
+  logMessage(message: string) {
+    this.setState({ message: this.state.message + "\n" + message });
+  }
+
+  loginRedirect() {
+    this.clientApplication.loginRedirect(applicationConfig.b2cScopes);
+  }
+
+  logout() {
+    this.clientApplication.logout();
+  }
+  
+  loginPopup() {
+    this.clientApplication.loginPopup(applicationConfig.b2cScopes).then((idToken) => {
+      this.clientApplication.acquireTokenSilent(applicationConfig.b2cScopes).then((accessToken) => {
+        var userName = this.clientApplication.getUser().name;
+        this.setState({ isLoggedIn: true });
+        this.logMessage("User '" + userName + "' logged-in");
+      }, (error) => {
+        this.clientApplication.acquireTokenPopup(applicationConfig.b2cScopes).then((accessToken) => {
+          var userName = this.clientApplication.getUser().name;
+          this.setState({ isLoggedIn: true });
+          this.logMessage("User '" + userName + "' logged-in");
+        }, (error) => {
+          this.logMessage("Error acquiring the popup:\n" + error);
         });
-    </script>
-```
-3. Then, once the user is logged-in, get an access token
+      })
+    }, (error) => {
+      this.logMessage("Error during login:\n" + error);
+    });
+  }
 
-```JavaScript
-   <script>
-          // get an access token
-          userAgentApplication.acquireTokenSilent(["user.read"]).then(function (token) {
-            console.log("ATS promise resolved");
-          }, function (error) {
-            // interaction required 
-            if(error.indexOf("interaction_required") != -1){
-                userAgentApplication.acquireTokenPopup(["user.read"]).then(function (token) {
-                // success
-              }, function (error) {
-                // error
-               });
-            }
-          });
-    </script>
-```
+  callApi() {
+    this.clientApplication.acquireTokenSilent(applicationConfig.b2cScopes).then((accessToken) => {
+      this.callApiWithAccessToken(accessToken);
+    }, (error) => {
+      this.clientApplication.acquireTokenPopup(applicationConfig.b2cScopes).then((accessToken) => {
+        this.callApiWithAccessToken(accessToken);
+      }, (error) => {
+        this.logMessage("Error acquiring the access token to call the Web api:\n" + error);
+      });
+    })
+  }
 
-4. use the token in an [HTTP bearer request](https://github.com/Azure-Samples/active-directory-javascript-singlepageapp-dotnet-webapi-v2/blob/master/TodoSPA/App/Scripts/Ctrls/todoListCtrl.js#L30), to call the Microsoft Graph or a Web API
+  callApiWithAccessToken(accessToken: string) {
+    // Call the Web API with the AccessToken
+    fetch(applicationConfig.webApi, {
+      method: "GET",
+      headers: { 'Authorization': 'Bearer ' + accessToken }
+    }).then(response => {
+      response.text().then(text => this.logMessage("Web APi returned:\n" + JSON.stringify(text)));
+    }).catch(result => {
+      this.logMessage("Error calling the Web api:\n" + result);
+    });
+  }
 
-## Installation
+  render() {
+    return (
+      <div style={{ width: '900px', margin: 'auto' }}>
+        <h1>Hello World!</h1>
+        <button onClick={() => this.loginPopup()} disabled={this.state.isLoggedIn}>Login Popup</button>
+        <button onClick={() => this.loginRedirect()} disabled={this.state.isLoggedIn}>Login Redirect</button>
+        <button onClick={() => this.logout()} disabled={!this.state.isLoggedIn}>Logout</button>
+        <button onClick={() => this.callApi()} disabled={!this.state.isLoggedIn}>Call Web API</button>
+        <pre>{this.state.message}</pre>
+      </div>
+    );
+  }
+}
 
-Via NPM:
-
-    npm install msal
-
-Via CDN:
-```JavaScript
-    <!-- Latest compiled and minified JavaScript -->
-    <script src="https://secure.aadcdn.microsoftonline-p.com/lib/0.1.1/js/msal.min.js"></script>
-```
-
-Note that msal.js is built for ES5, therefore enabling support of Internet Explorer 11. If you want to target Internet Explorer, you'll need to add a reference to promises polyfill. You might want to read more in the [FAQ](../../wiki)
-```JavaScript
-    <!-- IE support: add promises polyfill before msal.js  -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bluebird/3.3.4/bluebird.min.js" class="pre"></script> 
-    <script src="https://secure.aadcdn.microsoftonline-p.com/lib/0.1.1/js/msal.min.js"></script>
+render(<App />, document.getElementById('root') as HTMLElement);
 ```
 
 ## Community Help and Support

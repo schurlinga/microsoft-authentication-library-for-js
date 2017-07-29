@@ -1,13 +1,3 @@
 {
-  "extends": "./tsconfig.base.json",
-  "compileOnSave": true,
-  "compilerOptions": {
-    "outFile": "out/msal.js",
-    "declaration": true
-  },
-  "exclude": [
-    "node_modules",
-    "out",
-    "tests"
-  ]
+  "extends": "./tsconfig.cjs.json"
 }

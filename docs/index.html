@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>msaljs</title>
+	<title>msalx</title>
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="assets/css/main.css">
@@ -22,7 +22,7 @@
 						<li class="state loading">Preparing search index...</li>
 						<li class="state failure">The search index is not available</li>
 					</ul>
-					<a href="index.html" class="title">msaljs</a>
+					<a href="index.html" class="title">msalx</a>
 				</div>
 				<div class="table-cell" id="tsd-widgets">
 					<div id="tsd-filter">
@@ -56,7 +56,7 @@
 					<a href="globals.html">Globals</a>
 				</li>
 			</ul>
-			<h1> msaljs</h1>
+			<h1> msalx</h1>
 		</div>
 	</div>
 </header>
@@ -64,15 +64,16 @@
 	<div class="row">
 		<div class="col-8 col-content">
 			<div class="tsd-panel tsd-typography">
-				<h1 id="microsoft-authentication-library">Microsoft Authentication Library</h1>
+				<h1 id="multitarget-version-of-microsoft-authentication-library-preview-for-javascript">Multitarget version of Microsoft Authentication Library Preview for JavaScript</h1>
+				<p><em>Msal.js is in preview and does not support CommonJS or ES6 targets. This is a temporary solution to be used in react projects until the original repository supports CommonJS.</em></p>
 				<table>
 					<thead>
 						<tr>
-							<th><a href="https://aka.ms/aaddevv2">Getting Started</a></th>
+							<th><a href="https://github.com/Azure-Samples/active-directory-javascript-singlepageapp-dotnet-webapi-v2">Getting Started</a></th>
 							<th><a href="https://aka.ms/aaddevv2">Docs</a></th>
-							<th><a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/AzureAD/microsoft-authentication-library-for-js/dev/doc/index.html">API Reference</a></th>
+							<th><a href="https://htmlpreview.github.io/?https://raw.githubusercontent.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/docs/classes/_useragentapplication_.msal.useragentapplication.html">API Reference</a></th>
 							<th><a href="README.md#community-help-and-support">Support</a></th>
-							<th><a href="./devApps/VanillaJSTestApp">Sample</a></th>
+							<th><a href="./devApps/VanillaJSTestApp">Samples</a></th>
 						</tr>
 					</thead>
 					<tbody>
@@ -81,49 +82,113 @@
 						</tr>
 					</tbody>
 				</table>
-				<p>The MSAL library for JavaScript enables your app to authorize enterprise users using Microsoft Azure Active Directory(AAD), microsoft account users (MSA), users using social identity providers like Facebook, Google, LinkedIn etc. and get access to <a href="https://cloud.microsoft.com">Microsoft Cloud</a> OR  <a href="https://graph.microsoft.io">Microsoft Graph</a>. </p>
-				<p>The identity management services that the library interacts with are <a href="https://azure.microsoft.com/en-us/services/active-directory/">Microsoft Azure Active Directoryy</a>, <a href="https://azure.microsoft.com/services/active-directory-b2c/">Microsoft Azure B2C</a> and <a href="https://account.microsoft.com">Microsoft Accounts</a>.</p>
-				<p><a href="https://travis-ci.org/AzureAD/microsoft-authentication-library-for-js"><img src="https://travis-ci.org/AzureAD/microsoft-authentication-library-for-js.png?branch=dev" alt="Build Status"></a></p>
-				<p>MSAL for Javascript is in active development, but not yet ready. We encourage you to look at our work in progress and provide feedback!
-				<strong>It should not be used in production environments.</strong></p>
-				<h2 id="example">Example</h2>
-				<pre><code class="lang-JavaScript">
-        &lt;script <span class="hljs-class"><span class="hljs-keyword">class</span></span>=<span class="hljs-string">"pre"</span>&gt;
-        <span class="hljs-keyword">var</span> userAgentApplication = <span class="hljs-keyword">new</span> Msal.UserAgentApplication(<span class="hljs-string">"your_client_id"</span>, <span class="hljs-literal">null</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">errorDes, token, error, tokenType</span>) </span>{
-              <span class="hljs-comment">//this callback is called after loginredirect OR acquiretokenredirect</span>
-        })
-        userAgentApplication.loginPopup(<span class="hljs-string">"user.read"</span>).then( <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">token</span>) </span>{
-            <span class="hljs-keyword">var</span> user = userAgentApplication.getUser();
-            <span class="hljs-keyword">if</span> (user) {
-               <span class="hljs-comment">//signin successful</span>
-            } <span class="hljs-keyword">else</span> {
-               <span class="hljs-comment">//signin failure</span>
-            }
-        }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
-            <span class="hljs-comment">//handle error</span>
-        });
-          <span class="hljs-comment">//get an access token</span>
-          userAgentApplication.acquireTokenSilent(<span class="hljs-string">"user.read"</span>).then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">token</span>) </span>{
-            <span class="hljs-built_in">console</span>.log(<span class="hljs-string">"ATS promise resolved"</span>);
-          }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
-            <span class="hljs-comment">//interaction required </span>
-            <span class="hljs-keyword">if</span>(error.indexOf(<span class="hljs-string">"interaction_required"</span> != <span class="hljs-number">-1</span>) {
-                userAgentApplication.acquireTokenPopup(<span class="hljs-string">"mail.send"</span>).then(<span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">token</span>) </span>{
-                <span class="hljs-comment">//success</span>
-              }, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">error</span>) </span>{
-                <span class="hljs-comment">//error</span>
-               });
-            }
-          });
-    <span class="xml"><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span></span>
-</code></pre>
+				<p>The MSAL library preview for JavaScript enables your app to authorize enterprise users using Microsoft Azure Active Directory (AAD), Microsoft account users (MSA), users using social identity providers like Facebook, Google, LinkedIn etc. and get access to <a href="https://cloud.microsoft.com">Microsoft Cloud</a> OR  <a href="https://graph.microsoft.io">Microsoft Graph</a>. </p>
+				<p>The identity management services that the library interacts with are <a href="https://azure.microsoft.com/en-us/services/active-directory/">Microsoft Azure Active Directory</a>, <a href="https://azure.microsoft.com/services/active-directory-b2c/">Microsoft Azure B2C</a> and <a href="https://account.microsoft.com">Microsoft Accounts</a>.</p>
+				<p><a href="https://www.npmjs.com/package/msalx"><img src="https://img.shields.io/npm/v/msalx.svg?style=flat" alt="npm version"></a>
+				<a href="https://nodei.co/npm/msalx/"><img src="https://img.shields.io/npm/dm/msalx.svg" alt="npm version"></a></p>
+				<h2 id="important-note-about-the-msal-preview">Important Note about the MSAL Preview</h2>
+				<p>This library is suitable for use in a production environment. We provide the same production level support for this library as we do our current production libraries. During the preview we may make changes to the API, internal cache format, and other mechanisms of this library, which you will be required to take along with bug fixes or feature improvements. This may impact your application. For instance, a change to the cache format may impact your users, such as requiring them to sign in again. An API change may require you to update your code. When we provide the General Availability release we will require you to update to the General Availability version within six months, as applications written using a preview version of library may no longer work.</p>
 				<h2 id="installation">Installation</h2>
-				<p>Via NPM:</p>
-				<pre><code>npm <span class="hljs-keyword">install</span> adal-angular
-</code></pre><p>Via CDN:</p>
-				<pre><code><span class="hljs-comment">&lt;!-- Latest compiled and minified JavaScript --&gt;</span>
-<span class="hljs-tag">&lt;<span class="hljs-name">script</span> <span class="hljs-attr">src</span>=<span class="hljs-string">"https://secure.aadcdn.microsoftonline-p.com/lib/0.1.0/js/msal.min.js"</span>&gt;</span><span class="undefined"></span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-</code></pre><h2 id="community-help-and-support">Community Help and Support</h2>
+				<p>Via NPM:
+				<code>npm install msalx</code></p>
+				<h2 id="example">Example</h2>
+				<p>This example shows how to acquire a token to read user information from Microsoft Graph.</p>
+				<ol>
+					<li>Register an application in Azure AD v2.0 (using the <a href="https://apps.dev.microsoft.com/">application registration portal</a>) to get your client_id. you will also need to add the Web platform, check the &quot;Implicit Flow&quot; checkbox, and add the redirectURI to your application.</li>
+					<li>Instantiate a UserAgentApplication and login the user:
+						```TypeScript
+						import * as React from &#39;react&#39;;
+						import { render } from &#39;react-dom&#39;;
+					import { UserAgentApplication } from &#39;msalx&#39;;</li>
+				</ol>
+				<p>var applicationConfig = {
+					clientID: &#39;e760cab2-b9a1-4c0d-86fb-ff7084abd902&#39;,
+					authority: &quot;<a href="https://login.microsoftonline.com/tfp/fabrikamb2c.onmicrosoft.com/b2c_1_susi">https://login.microsoftonline.com/tfp/fabrikamb2c.onmicrosoft.com/b2c_1_susi</a>&quot;,
+					b2cScopes: [&quot;<a href="https://fabrikamb2c.onmicrosoft.com/demoapi/demo.read">https://fabrikamb2c.onmicrosoft.com/demoapi/demo.read</a>&quot;],
+					webApi: &#39;<a href="https://fabrikamb2chello.azurewebsites.net/hello">https://fabrikamb2chello.azurewebsites.net/hello</a>&#39;,
+				};</p>
+				<p>class App extends React.Component&lt;{}, { isLoggedIn: boolean, message: string }&gt; {</p>
+				<p>  clientApplication = new UserAgentApplication(applicationConfig.clientID, applicationConfig.authority,
+					(errorDesc, token, error, tokenType) =&gt; {
+					// Called after loginRedirect or acquireTokenPopup
+					if (tokenType == &quot;id_token&quot;) {
+					var userName = this.clientApplication.getUser().name;
+					this.setState({ isLoggedIn: true });
+					this.logMessage(&quot;User &#39;&quot; + userName + &quot;&#39; logged-in&quot;);
+					} else {
+					this.logMessage(&quot;Error during login:\n&quot; + error);
+					}
+				});</p>
+				<p>  state = {
+					isLoggedIn: false,
+					message: &quot;&quot;
+				}</p>
+				<p>  logMessage(message: string) {
+					this.setState({ message: this.state.message + &quot;\n&quot; + message });
+				}</p>
+				<p>  loginRedirect() {
+					this.clientApplication.loginRedirect(applicationConfig.b2cScopes);
+				}</p>
+				<p>  logout() {
+					this.clientApplication.logout();
+				}</p>
+				<p>  loginPopup() {
+					this.clientApplication.loginPopup(applicationConfig.b2cScopes).then((idToken) =&gt; {
+					this.clientApplication.acquireTokenSilent(applicationConfig.b2cScopes).then((accessToken) =&gt; {
+					var userName = this.clientApplication.getUser().name;
+					this.setState({ isLoggedIn: true });
+					this.logMessage(&quot;User &#39;&quot; + userName + &quot;&#39; logged-in&quot;);
+					}, (error) =&gt; {
+					this.clientApplication.acquireTokenPopup(applicationConfig.b2cScopes).then((accessToken) =&gt; {
+					var userName = this.clientApplication.getUser().name;
+					this.setState({ isLoggedIn: true });
+					this.logMessage(&quot;User &#39;&quot; + userName + &quot;&#39; logged-in&quot;);
+					}, (error) =&gt; {
+					this.logMessage(&quot;Error acquiring the popup:\n&quot; + error);
+					});
+					})
+					}, (error) =&gt; {
+					this.logMessage(&quot;Error during login:\n&quot; + error);
+					});
+				}</p>
+				<p>  callApi() {
+					this.clientApplication.acquireTokenSilent(applicationConfig.b2cScopes).then((accessToken) =&gt; {
+					this.callApiWithAccessToken(accessToken);
+					}, (error) =&gt; {
+					this.clientApplication.acquireTokenPopup(applicationConfig.b2cScopes).then((accessToken) =&gt; {
+					this.callApiWithAccessToken(accessToken);
+					}, (error) =&gt; {
+					this.logMessage(&quot;Error acquiring the access token to call the Web api:\n&quot; + error);
+					});
+					})
+				}</p>
+				<p>  callApiWithAccessToken(accessToken: string) {
+					// Call the Web API with the AccessToken
+					fetch(applicationConfig.webApi, {
+					method: &quot;GET&quot;,
+					headers: { &#39;Authorization&#39;: &#39;Bearer &#39; + accessToken }
+					}).then(response =&gt; {
+					response.text().then(text =&gt; this.logMessage(&quot;Web APi returned:\n&quot; + JSON.stringify(text)));
+					}).catch(result =&gt; {
+					this.logMessage(&quot;Error calling the Web api:\n&quot; + result);
+					});
+				}</p>
+				<p>  render() {
+					return (
+					<div style={{ width: '900px', margin: 'auto' }}>
+						<h1>Hello World!</h1>
+						<button onClick={() => this.loginPopup()} disabled={this.state.isLoggedIn}&gt;Login Popup</button>
+						<button onClick={() => this.loginRedirect()} disabled={this.state.isLoggedIn}&gt;Login Redirect</button>
+						<button onClick={() => this.logout()} disabled={!this.state.isLoggedIn}&gt;Logout</button>
+						<button onClick={() => this.callApi()} disabled={!this.state.isLoggedIn}&gt;Call Web API</button>
+						<pre>{this.state.message}</pre>
+					</div>
+					);
+					}
+				}</p>
+				<p>render(<App />, document.getElementById(&#39;root&#39;) as HTMLElement);
+				```</p>
+				<h2 id="community-help-and-support">Community Help and Support</h2>
 				<ul>
 					<li><p><a href="../../wiki">FAQ</a> for access to our frequently asked questions</p>
 					</li>
@@ -174,6 +239,9 @@
 						<a href="modules/_authority_.html">"<wbr>Authority"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
+						<a href="modules/_authorityfactory_.html">"<wbr>Authority<wbr>Factory"</a>
+					</li>
+					<li class=" tsd-kind-external-module">
 						<a href="modules/_b2cauthority_.html">"<wbr>B2c<wbr>Authority"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -184,9 +252,6 @@
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_errormessage_.html">"<wbr>Error<wbr>Message"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
-						<a href="modules/_iinstancediscoveryresponse_.html">"IInstance<wbr>Discovery<wbr>Response"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
 						<a href="modules/_itenantdiscoveryresponse_.html">"ITenant<wbr>Discovery<wbr>Response"</a>
@@ -210,9 +275,6 @@
 						<a href="modules/_storage_.html">"<wbr>Storage"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_telemetry_.html">"<wbr>Telemetry"</a>
-					</li>
-					<li class=" tsd-kind-external-module">
 						<a href="modules/_user_.html">"<wbr>User"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
@@ -222,10 +284,10 @@
 						<a href="modules/_utils_.html">"<wbr>Utils"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_window_.html">"<wbr>Window"</a>
+						<a href="modules/_xhrclient_.html">"<wbr>Xhr<wbr>Client"</a>
 					</li>
 					<li class=" tsd-kind-external-module">
-						<a href="modules/_xhrclient_.html">"XHRClient"</a>
+						<a href="modules/_index_.html">"index"</a>
 					</li>
 				</ul>
 			</nav>
