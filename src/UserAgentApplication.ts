@@ -278,7 +278,7 @@ export class UserAgentApplication {
           this._cacheStorage.setItem(authorityKey, this.authority);
         }
 
-        const urlNavigate = authenticationRequest.createNavigateUrl(scopes) + "&prompt=select_account" + "&response_mode=fragment";
+        const urlNavigate = authenticationRequest.createNavigateUrl(scopes) + "&response_mode=fragment";
         this._loginInProgress = true;
         this.promptUser(urlNavigate);
       });
@@ -335,7 +335,7 @@ export class UserAgentApplication {
           this._cacheStorage.setItem(authorityKey, this.authority);
         }
 
-        const urlNavigate = authenticationRequest.createNavigateUrl(scopes) + "&prompt=select_account" + "&response_mode=fragment";
+        const urlNavigate = authenticationRequest.createNavigateUrl(scopes) + "&response_mode=fragment";
         this._loginInProgress = true;
         if (popUpWindow) {
           popUpWindow.location.href = urlNavigate;
